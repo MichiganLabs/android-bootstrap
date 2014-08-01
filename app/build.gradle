@@ -33,6 +33,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:1.1.1'
     compile 'com.squareup.retrofit:retrofit:1.5.1'
     compile 'com.android.support:support-v4:13.0.+'
+    compile 'net.hockeyapp.android:HockeySDK:3.0.1'
 
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'

@@ -8,6 +8,8 @@ package com.donnfelker.android.bootstrap.core;
 public final class Constants {
     private Constants() {}
 
+    public static final String HOCKEYAPP_ID = "(Fill in your app's HockeyApp ID)";
+
     public static final class Auth {
         private Auth() {}
 

@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.donnfelker.android.bootstrap.Injector;
+import com.donnfelker.android.bootstrap.util.HockeyApp;
 
 import butterknife.ButterKnife;
 
@@ -30,6 +31,13 @@ public abstract class BootstrapActivity extends ActionBarActivity {
 
         // Used to inject views with the Butterknife library
         ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        HockeyApp.checkForCrashes(this);
     }
 
     @Override

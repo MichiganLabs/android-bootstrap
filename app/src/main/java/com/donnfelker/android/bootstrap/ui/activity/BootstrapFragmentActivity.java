@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.donnfelker.android.bootstrap.Injector;
+import com.donnfelker.android.bootstrap.util.HockeyApp;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
@@ -37,6 +38,8 @@ public class BootstrapFragmentActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         eventBus.register(this);
+
+        HockeyApp.checkForCrashes(this);
     }
 
     @Override
