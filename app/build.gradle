@@ -41,10 +41,10 @@ android {
     buildToolsVersion '19.1.0'
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 19
-        versionCode 102
-        versionName '1.0'
+        versionCode getNumberOfGitCommits()
+        versionName "${getCurrentGitBranchName()}"
     }
 
     packagingOptions {
@@ -81,4 +81,18 @@ android {
             // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
         }
     }
+}
+
+/*
+ * Gets the current Git branch name
+ */
+def String getCurrentGitBranchName() {
+    return 'git symbolic-ref --short HEAD'.execute().text.trim()
+}
+
+/*
+ * Gets the number of Git commits up to this point
+ */
+def int getNumberOfGitCommits() {
+    return Integer.parseInt('git rev-list HEAD --count'.execute().text.trim())
 }
