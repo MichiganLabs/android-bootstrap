@@ -1,4 +1,4 @@
-package com.donnfelker.android.bootstrap.ui;
+package com.donnfelker.android.bootstrap.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;

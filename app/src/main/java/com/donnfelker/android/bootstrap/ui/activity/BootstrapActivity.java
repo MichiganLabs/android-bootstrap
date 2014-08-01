@@ -1,4 +1,4 @@
-package com.donnfelker.android.bootstrap.ui;
+package com.donnfelker.android.bootstrap.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
