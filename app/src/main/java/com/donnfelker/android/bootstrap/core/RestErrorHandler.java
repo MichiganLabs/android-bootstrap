@@ -3,6 +3,7 @@ package com.donnfelker.android.bootstrap.core;
 import com.donnfelker.android.bootstrap.events.NetworkErrorEvent;
 import com.donnfelker.android.bootstrap.events.RestAdapterErrorEvent;
 import com.donnfelker.android.bootstrap.events.UnAuthorizedErrorEvent;
+import com.donnfelker.android.bootstrap.util.Ln;
 import com.squareup.otto.Bus;
 
 import retrofit.ErrorHandler;
@@ -63,11 +64,20 @@ public class RestErrorHandler implements ErrorHandler {
     private boolean isUnAuthorized(RetrofitError cause) {
         boolean authFailed = false;
 
-        if(cause.getResponse().getStatus() == HTTP_NOT_FOUND) {
-            final ApiError err = (ApiError) cause.getBodyAs(ApiError.class);
-            if(err != null && err.getCode() == INVALID_LOGIN_PARAMETERS) {
-                authFailed = true;
+        if (cause != null && cause.getResponse() != null) {
+            if (cause.getResponse().getStatus() == HTTP_NOT_FOUND) {
+                try {
+                    final ApiError err = (ApiError) cause.getBodyAs(ApiError.class);
+                    if (err != null && err.getCode() == INVALID_LOGIN_PARAMETERS) {
+                        authFailed = true;
+                    }
+                } catch (RuntimeException e) {
+                    Ln.e("Parse of RetrofitError failed");
+                    authFailed = false;
+                }
             }
+        } else {
+            Ln.e("cause or cause.response was null");
         }
 
         return authFailed;
