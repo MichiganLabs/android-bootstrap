@@ -47,7 +47,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode getNumberOfGitCommits()
+        versionCode 101
         versionName "${getCurrentGitBranchName()}"
     }
 
@@ -92,11 +92,4 @@ android {
  */
 def String getCurrentGitBranchName() {
     return 'git symbolic-ref --short HEAD'.execute().text.trim()
-}
-
-/*
- * Gets the number of Git commits up to this point
- */
-def int getNumberOfGitCommits() {
-    return Integer.parseInt('git rev-list HEAD --count'.execute().text.trim())
 }
