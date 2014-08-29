@@ -327,6 +327,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         if (authTokenType != null
                 && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE)) {
             intent.putExtra(KEY_AUTHTOKEN, authToken);
+            accountManager.setAuthToken(account, authTokenType, authToken); //  the intent is not enough to get the auth token to stick, so this line does the trick
         }
 
         setAccountAuthenticatorResult(intent.getExtras());
