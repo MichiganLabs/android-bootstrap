@@ -3,6 +3,7 @@
 package com.donnfelker.android.bootstrap.core;
 
 import com.donnfelker.android.bootstrap.BootstrapApplication;
+import com.donnfelker.android.bootstrap.BuildConfig;
 import com.donnfelker.android.bootstrap.R;
 
 /**
@@ -11,7 +12,7 @@ import com.donnfelker.android.bootstrap.R;
 public final class Constants {
     private Constants() {}
 
-    public static final String HOCKEYAPP_ID = "(Fill in your app's HockeyApp ID)";
+    public static final String HOCKEYAPP_ID = BuildConfig.HOCKEYAPP_ID;
 
     public static final class Auth {
         private Auth() {}
@@ -51,7 +52,7 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://api.parse.com";
+        public static final String URL_BASE = BuildConfig.URL_BASE;
 
 
         /**

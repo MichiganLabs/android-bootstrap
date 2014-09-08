@@ -77,6 +77,9 @@ android {
             runProguard false
             // zipAlign false // this is default for debug
 
+            buildConfigField "String", "URL_BASE", "\"https://api.parse.com\""
+            buildConfigField "String", "HOCKEYAPP_ID", "\"(Insert your debug/beta HockeyApp ID here)\""
+
             resValue "string", "application_id", android.defaultConfig.applicationId + applicationIdSuffix
             resValue "string", "account_type", android.defaultConfig.applicationId + applicationIdSuffix
             resValue "string", "content_authority", android.defaultConfig.applicationId + applicationIdSuffix + ".provider"
@@ -88,6 +91,9 @@ android {
             // zipAlign true // this is default for release
             // testPackageName 'com.donnfelker.android.bootstrap.tests'
             // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
+
+            buildConfigField "String", "URL_BASE", "\"https://api.parse.com\""
+            buildConfigField "String", "HOCKEYAPP_ID", "\"(Insert your release/store HockeyApp ID here)\""
 
             resValue "string", "application_id", android.defaultConfig.applicationId
             resValue "string", "account_type", android.defaultConfig.applicationId
