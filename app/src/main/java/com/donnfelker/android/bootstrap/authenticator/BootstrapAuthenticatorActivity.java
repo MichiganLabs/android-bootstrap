@@ -44,6 +44,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
+
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +91,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     private final TextWatcher watcher = validationTextWatcher();
 
     private SafeAsyncTask<Boolean> authenticationTask;
-    private String authToken;
     private String authTokenType;
 
     /**
@@ -261,8 +262,15 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
             @Override
             protected void onException(final Exception e) throws RuntimeException {
-                // Retrofit Errors are handled inside of the {
-                if(!(e instanceof RetrofitError)) {
+                if (e instanceof RetrofitError) {
+                    if (e.getCause() instanceof UnknownHostException) {
+                        Ln.e(e, "Authentication attempt: No network");
+                        Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_no_network);
+                    } else {
+                        Ln.e(e, "Authentication attempt failed");
+                        Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_credentials);
+                    }
+                } else {
                     final Throwable cause = e.getCause() != null ? e.getCause() : e;
                     if(cause != null) {
                         Toaster.showLong(BootstrapAuthenticatorActivity.this, cause.getMessage());
@@ -318,16 +326,14 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             accountManager.setPassword(account, password);
         }
 
-        authToken = token;
-
         final Intent intent = new Intent();
         intent.putExtra(KEY_ACCOUNT_NAME, email);
         intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
 
         if (authTokenType != null
                 && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE)) {
-            intent.putExtra(KEY_AUTHTOKEN, authToken);
-            accountManager.setAuthToken(account, authTokenType, authToken); //  the intent is not enough to get the auth token to stick, so this line does the trick
+            intent.putExtra(KEY_AUTHTOKEN, token);
+            accountManager.setAuthToken(account, authTokenType, token); //  the intent is not enough to get the auth token to stick, so this line does the trick
         }
 
         setAccountAuthenticatorResult(intent.getExtras());
