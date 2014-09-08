@@ -2,6 +2,9 @@
 
 package com.donnfelker.android.bootstrap.core;
 
+import com.donnfelker.android.bootstrap.BootstrapApplication;
+import com.donnfelker.android.bootstrap.R;
+
 /**
  * Bootstrap constants
  */
@@ -16,17 +19,20 @@ public final class Constants {
         /**
          * Account type id
          */
-        public static final String BOOTSTRAP_ACCOUNT_TYPE = "com.androidbootstrap";
+        public static final String BOOTSTRAP_ACCOUNT_TYPE =
+                BootstrapApplication.getInstance().getApplicationContext().getString(R.string.account_type);
 
         /**
          * Account name
          */
-        public static final String BOOTSTRAP_ACCOUNT_NAME = "Android Bootstrap";
+        public static final String BOOTSTRAP_ACCOUNT_NAME =
+                BootstrapApplication.getInstance().getApplicationContext().getString(R.string.app_name);
 
         /**
          * Provider id
          */
-        public static final String BOOTSTRAP_PROVIDER_AUTHORITY = "com.androidbootstrap.sync";
+        public static final String BOOTSTRAP_PROVIDER_AUTHORITY =
+                BootstrapApplication.getInstance().getApplicationContext().getString(R.string.content_authority);
 
         /**
          * Auth token type
@@ -109,7 +115,8 @@ public final class Constants {
         /**
          * Action prefix for all intents created
          */
-        public static final String INTENT_PREFIX = "com.donnfelker.android.bootstrap.";
+        public static final String INTENT_PREFIX =
+                BootstrapApplication.getInstance().getApplicationContext().getString(R.string.application_id) + ".";
 
     }
 
