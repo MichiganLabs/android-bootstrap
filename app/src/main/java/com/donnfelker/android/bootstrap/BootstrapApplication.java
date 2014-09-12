@@ -43,7 +43,7 @@ public class BootstrapApplication extends Application {
         HockeyApp.initialize(this);
     }
 
-    private Object getRootModule() {
+    protected Object getRootModule() {
         return new RootModule();
     }
 
