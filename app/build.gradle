@@ -57,6 +57,9 @@ dependencies {
     compile 'com.android.support:support-v13:20.0.0'
     compile 'net.hockeyapp.android:HockeySDK:3.0.1'
 
+    // Fonts
+    compile 'uk.co.chrisjenx:calligraphy:2.0.2'
+
 
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
