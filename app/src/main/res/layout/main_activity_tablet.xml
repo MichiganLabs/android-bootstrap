@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_drawer"
-        android:name="com.donnfelker.android.bootstrap.ui.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:name="com.donnfelker.android.bootstrap.ui.fragment.NavigationDrawerFragment" />
 
     <LinearLayout
         android:id="@+id/container"

@@ -1,4 +1,4 @@
-package com.donnfelker.android.bootstrap.ui;
+package com.donnfelker.android.bootstrap.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.donnfelker.android.bootstrap.Injector;
+import com.donnfelker.android.bootstrap.util.HockeyApp;
 
 import butterknife.ButterKnife;
 
@@ -30,6 +31,13 @@ public abstract class BootstrapActivity extends Activity {
 
         // Used to inject views with the Butterknife library
         ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        HockeyApp.checkForCrashes(this);
     }
 
     @Override

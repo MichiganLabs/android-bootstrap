@@ -1,14 +1,22 @@
+def int releaseVersionCode = 101
+def String releaseVersionName = "1.0"
+
 buildscript {
     repositories {
+        flatDir {
+            dirs 'libs'
+        }
         maven { url 'http://repo1.maven.org/maven2' }
         mavenLocal()
         mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
+apply plugin: 'robolectric'
 
 repositories {
     maven { url 'https://github.com/donnfelker/mvn-repo/raw/master/' }
@@ -24,6 +32,11 @@ dependencies {
     compile 'com.squareup.dagger:dagger-compiler:1.0.1'
     compile 'com.jakewharton:butterknife:6.0.0'
 
+    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.squareup.dagger:dagger:1.0.1'
+    compile 'com.squareup.dagger:dagger-compiler:1.0.1'
+    compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.actionbarsherlock:viewpagerindicator:2.4.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.kevinsawicki:wishlist:0.9'
@@ -32,6 +45,8 @@ dependencies {
     compile 'com.squareup:otto:1.3.5'
 
     // Image Loading
+    compile 'com.github.kevinsawicki:http-request:5.6'
+    compile 'com.squareup:otto:1.3.4'
     compile 'com.squareup.picasso:picasso:1.1.1'
 
     // HTTP
@@ -40,10 +55,33 @@ dependencies {
     // Android Support Libs
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.android.support:support-v13:20.0.0'
+    compile 'net.hockeyapp.android:HockeySDK:3.0.1'
+
 
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
     androidTestCompile 'org.mockito:mockito-core:1.9.5'
+    androidTestCompile('org.robolectric:robolectric:2.3') {
+        // exclusions necessary for Robolectric JUnit tests to run.
+        // prevents LoggedErrorException.
+        exclude module: 'classworlds'
+        exclude module: 'maven-artifact'
+        exclude module: 'maven-artifact-manager'
+        exclude module: 'maven-error-diagnostics'
+        exclude module: 'maven-model'
+        exclude module: 'maven-plugin-registry'
+        exclude module: 'maven-profile'
+        exclude module: 'maven-project'
+        exclude module: 'maven-settings'
+        exclude module: 'nekohtml'
+        exclude module: 'plexus-container-default'
+        exclude module: 'plexus-interpolation'
+        exclude module: 'plexus-utils'
+        exclude module: 'wagon-file'
+        exclude module: 'wagon-http-lightweight'
+        exclude module: 'wagon-http-shared'
+        exclude module: 'wagon-provider-api'
+    }
 }
 
 android {
@@ -51,17 +89,23 @@ android {
     buildToolsVersion '20.0.0'
 
     defaultConfig {
+        applicationId "com.donnfelker.android.bootstrap"
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 102
-        versionName '1.0'
+        versionCode releaseVersionCode
+        versionName releaseVersionName
     }
 
     packagingOptions {
         // Exclude file to avoid
         // Error: Duplicate files during packaging of APK
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+        // exclusions necessary for Robolectric JUnit tests to run
         exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
     }
 
     // signingConfigs {
@@ -79,9 +123,18 @@ android {
 
     buildTypes {
         debug {
+            versionNameSuffix "-${getCurrentGitBranchName()}"
+
             applicationIdSuffix '.debug'
             minifyEnabled false
             // zipAlign false // this is default for debug
+
+            buildConfigField "String", "URL_BASE", "\"https://api.parse.com\""
+            buildConfigField "String", "HOCKEYAPP_ID", "\"(Insert your debug/beta HockeyApp ID here)\""
+
+            resValue "string", "application_id", android.defaultConfig.applicationId + applicationIdSuffix
+            resValue "string", "account_type", android.defaultConfig.applicationId + applicationIdSuffix
+            resValue "string", "content_authority", android.defaultConfig.applicationId + applicationIdSuffix + ".provider"
         }
         release {
             // minifyEnabled true
@@ -90,6 +143,29 @@ android {
             // zipAlign true // this is default for release
             // testPackageName 'com.donnfelker.android.bootstrap.tests'
             // testInstrumentationRunner 'android.test.InstrumentationTestRunner' // this is the default
+
+            buildConfigField "String", "URL_BASE", "\"https://api.parse.com\""
+            buildConfigField "String", "HOCKEYAPP_ID", "\"(Insert your release/store HockeyApp ID here)\""
+
+            resValue "string", "application_id", android.defaultConfig.applicationId
+            resValue "string", "account_type", android.defaultConfig.applicationId
+            resValue "string", "content_authority", android.defaultConfig.applicationId + ".provider"
         }
     }
+
+    sourceSets {
+        androidTest.setRoot('src/test')
+    }
+}
+
+robolectric {
+    include '**/*Test.class'
+    exclude '**/espresso/**/*.class'
+}
+
+/*
+ * Gets the current Git branch name
+ */
+def String getCurrentGitBranchName() {
+    return 'git symbolic-ref --short HEAD'.execute().text.trim()
 }

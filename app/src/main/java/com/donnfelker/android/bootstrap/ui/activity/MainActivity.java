@@ -1,6 +1,6 @@
 
 
-package com.donnfelker.android.bootstrap.ui;
+package com.donnfelker.android.bootstrap.ui.activity;
 
 import android.accounts.OperationCanceledException;
 import android.app.FragmentManager;
@@ -17,6 +17,7 @@ import com.donnfelker.android.bootstrap.BootstrapServiceProvider;
 import com.donnfelker.android.bootstrap.R;
 import com.donnfelker.android.bootstrap.core.BootstrapService;
 import com.donnfelker.android.bootstrap.events.NavItemSelectedEvent;
+import com.donnfelker.android.bootstrap.ui.fragment.NavigationDrawerFragment;
 import com.donnfelker.android.bootstrap.util.Ln;
 import com.donnfelker.android.bootstrap.util.SafeAsyncTask;
 import com.donnfelker.android.bootstrap.util.UIUtils;
@@ -132,15 +133,7 @@ public class MainActivity extends BootstrapFragmentActivity {
 
 
     private void initScreen() {
-        if (userHasAuthenticated) {
-
-            Ln.d("Foo");
-            final FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, new CarouselFragment())
-                    .commit();
-        }
-
+        // do your things
     }
 
     private void checkAuth() {
@@ -182,17 +175,9 @@ public class MainActivity extends BootstrapFragmentActivity {
             case android.R.id.home:
                 //menuDrawer.toggleMenu();
                 return true;
-            case R.id.timer:
-                navigateToTimer();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void navigateToTimer() {
-        final Intent i = new Intent(this, BootstrapTimerActivity.class);
-        startActivity(i);
     }
 
     @Subscribe
@@ -204,10 +189,6 @@ public class MainActivity extends BootstrapFragmentActivity {
             case 0:
                 // Home
                 // do nothing as we're already on the home screen.
-                break;
-            case 1:
-                // Timer
-                navigateToTimer();
                 break;
         }
     }

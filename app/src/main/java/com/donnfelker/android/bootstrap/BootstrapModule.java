@@ -11,16 +11,9 @@ import com.donnfelker.android.bootstrap.core.Constants;
 import com.donnfelker.android.bootstrap.core.PostFromAnyThreadBus;
 import com.donnfelker.android.bootstrap.core.RestAdapterRequestInterceptor;
 import com.donnfelker.android.bootstrap.core.RestErrorHandler;
-import com.donnfelker.android.bootstrap.core.TimerService;
 import com.donnfelker.android.bootstrap.core.UserAgentProvider;
-import com.donnfelker.android.bootstrap.ui.BootstrapTimerActivity;
-import com.donnfelker.android.bootstrap.ui.CheckInsListFragment;
-import com.donnfelker.android.bootstrap.ui.MainActivity;
-import com.donnfelker.android.bootstrap.ui.NavigationDrawerFragment;
-import com.donnfelker.android.bootstrap.ui.NewsActivity;
-import com.donnfelker.android.bootstrap.ui.NewsListFragment;
-import com.donnfelker.android.bootstrap.ui.UserActivity;
-import com.donnfelker.android.bootstrap.ui.UserListFragment;
+import com.donnfelker.android.bootstrap.ui.activity.MainActivity;
+import com.donnfelker.android.bootstrap.ui.fragment.NavigationDrawerFragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
@@ -39,18 +32,13 @@ import retrofit.converter.GsonConverter;
 @Module(
         complete = false,
 
+        library = true,
+
         injects = {
                 BootstrapApplication.class,
                 BootstrapAuthenticatorActivity.class,
                 MainActivity.class,
-                BootstrapTimerActivity.class,
-                CheckInsListFragment.class,
-                NavigationDrawerFragment.class,
-                NewsActivity.class,
-                NewsListFragment.class,
-                UserActivity.class,
-                UserListFragment.class,
-                TimerService.class
+                NavigationDrawerFragment.class
         }
 )
 public class BootstrapModule {

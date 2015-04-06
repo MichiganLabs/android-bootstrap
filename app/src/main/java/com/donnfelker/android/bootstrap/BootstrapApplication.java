@@ -6,6 +6,8 @@ import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
 
+import com.donnfelker.android.bootstrap.util.HockeyApp;
+
 /**
  * Android Bootstrap application
  */
@@ -38,9 +40,10 @@ public class BootstrapApplication extends Application {
         // Perform injection
         Injector.init(getRootModule(), this);
 
+        HockeyApp.initialize(this);
     }
 
-    private Object getRootModule() {
+    protected Object getRootModule() {
         return new RootModule();
     }
 
