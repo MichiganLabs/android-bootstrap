@@ -1,15 +1,16 @@
-package com.donnfelker.android.bootstrap.ui;
+package com.donnfelker.android.bootstrap.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 import com.donnfelker.android.bootstrap.Injector;
+import com.donnfelker.android.bootstrap.util.HockeyApp;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
+import butterknife.InjectView;
 import butterknife.ButterKnife;
-
 
 /**
  * Base class for all Bootstrap Activities that need fragments.
@@ -37,6 +38,8 @@ public class BootstrapFragmentActivity extends Activity {
     protected void onResume() {
         super.onResume();
         eventBus.register(this);
+
+        HockeyApp.checkForCrashes(this);
     }
 
     @Override

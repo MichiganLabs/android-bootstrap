@@ -16,9 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -46,6 +44,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
+
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,10 +165,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         emailText.addTextChangedListener(watcher);
         passwordText.addTextChangedListener(watcher);
-
-        final TextView signUpText = (TextView) findViewById(id.tv_signup);
-        signUpText.setMovementMethod(LinkMovementMethod.getInstance());
-        signUpText.setText(Html.fromHtml(getString(string.signup_link)));
     }
 
     private List<String> userEmailAccounts() {
@@ -267,8 +263,15 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
             @Override
             protected void onException(final Exception e) throws RuntimeException {
-                // Retrofit Errors are handled inside of the {
-                if(!(e instanceof RetrofitError)) {
+                if (e instanceof RetrofitError) {
+                    if (e.getCause() instanceof UnknownHostException) {
+                        Ln.e(e, "Authentication attempt: No network");
+                        Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_no_network);
+                    } else {
+                        Ln.e(e, "Authentication attempt failed");
+                        Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_credentials);
+                    }
+                } else {
                     final Throwable cause = e.getCause() != null ? e.getCause() : e;
                     if(cause != null) {
                         Toaster.showLong(BootstrapAuthenticatorActivity.this, cause.getMessage());
@@ -333,7 +336,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         if (authTokenType != null
                 && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE)) {
-            intent.putExtra(KEY_AUTHTOKEN, authToken);
+            intent.putExtra(KEY_AUTHTOKEN, token);
+            accountManager.setAuthToken(account, authTokenType, token); //  the intent is not enough to get the auth token to stick, so this line does the trick
         }
 
         setAccountAuthenticatorResult(intent.getExtras());

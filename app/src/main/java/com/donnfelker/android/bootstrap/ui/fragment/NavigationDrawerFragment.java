@@ -1,4 +1,4 @@
-package com.donnfelker.android.bootstrap.ui;
+package com.donnfelker.android.bootstrap.ui.fragment;
 
 import android.app.ActionBar;
 import android.app.Activity;
