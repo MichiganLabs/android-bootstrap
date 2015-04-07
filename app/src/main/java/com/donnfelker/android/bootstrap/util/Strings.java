@@ -194,4 +194,12 @@ public class Strings {
         return namedFormat(str, map);
     }
 
+    public static boolean nullOrEmpty(String str) {
+        return str == null || str.equals("");
+    }
+
+    public static boolean notNullOrEmpty(String str) {
+        return !nullOrEmpty(str);
+    }
+
 }
